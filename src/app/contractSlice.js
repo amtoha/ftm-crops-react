@@ -6,10 +6,6 @@ import {
   secondContractAddress,
 } from "../utils/constans";
 
-let mainContract;
-let secondContract;
-let provider;
-
 export function readableBNB(amount, decimals) {
   const num = amount / 1e18;
   if (num < 1) {
@@ -19,7 +15,8 @@ export function readableBNB(amount, decimals) {
 }
 export const fetchSiteInfo = createAsyncThunk(
   "contract/fetchSiteInfo",
-  async () => {
+  async (_, { getState }) => {
+    const { mainContract } = getState();
     const response = await mainContract.getSiteInfo();
     const balance = await mainContract.getBalance();
     let siteInfo = {};
@@ -33,7 +30,8 @@ export const fetchSiteInfo = createAsyncThunk(
 
 export const fetchUserInfo = createAsyncThunk(
   "contract/fetchUserInfo",
-  async (currentAddr) => {
+  async (currentAddr, { getState }) => {
+    const { secondContract, provider } = getState();
     const userData = await secondContract.getUserInfo(currentAddr);
     const userBalance = await provider.getBalance(currentAddr);
 
@@ -100,14 +98,25 @@ export const contractSlice = createSlice({
       withdrawAttr: true,
       reinvestAttr: true,
     },
+    provider: null,
+    mainContract: null,
+    secondContract: null,
   },
 
   reducers: {
     createContract(state, { payload }) {
-      provider = payload;
-      const signer = provider.getSigner();
-      mainContract = new ethers.Contract(mainContractAddress, abi, signer);
-      secondContract = new ethers.Contract(secondContractAddress, abi, signer);
+      state.provider = payload;
+      const signer = state.provider.getSigner();
+      state.mainContract = new ethers.Contract(
+        mainContractAddress,
+        abi,
+        signer
+      );
+      state.secondContract = new ethers.Contract(
+        secondContractAddress,
+        abi,
+        signer
+      );
     },
     setClaimTimer(state, { payload }) {
       state.config.claimTimer = payload;

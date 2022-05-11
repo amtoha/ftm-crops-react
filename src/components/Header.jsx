@@ -1,24 +1,25 @@
-import twitter from '/public/img/twitter.svg'
-import telegram from '/public/img/telegram.svg'
-import bscscan from '/public/img/logo-ftmscan.svg'
+import twitter from "../img/twitter.svg";
+import telegram from "../img/telegram.svg";
+import bscscan from "../img/logo-ftmscan.svg";
+import ccs from "../img/ccs-audit.png";
 
-import { ImSpinner9 } from 'react-icons/im'
+import { ImSpinner9 } from "react-icons/im";
 
-import NavItem from './NavItem'
-import { switchChain } from '../utils/utils'
+import NavItem from "./NavItem";
+import { switchChain } from "../utils/utils";
 
-const Header = ({ accounts, isActive, isActivating }) => {
+const Header = ({ account, isActive, isActivating }) => {
   return (
     <header className="flex justify-center w-full py-4 bg-black text-sm font-bold bg-opacity-80 fixed z-10">
       <div className="container flex">
         <nav className="flex justify-center items-center w-full space-x-10 container flex-1">
           <NavItem
             url="/The BUSD Crops Farmer.pdf"
-            image="/img/ccs-audit.png"
+            image={ccs}
             text="Audited by CyberCrimeShield™"
           />
           <NavItem
-            url="https://testnet.ftmscan.com/address/0x63be9aea58c297d023690a78de92996adbddee5d"
+            url="https://ftmscan.com/address/0x23993031b967efe4046b1ff8f1d0e3b6f453621a"
             image={bscscan}
             text="Contract™"
           />
@@ -37,8 +38,8 @@ const Header = ({ accounts, isActive, isActivating }) => {
         {isActive ? (
           <button className="px-[20px] py-[8px] border border-blue rounded-[5px] flex space-x-4 items-center mr-[100px] w-[200px] justify-center h-[40px]">
             <span>
-              {`${accounts[0].substring(0, 6)}...${accounts[0].substring(
-                accounts[0].length - 4
+              {`${account.substring(0, 6)}...${account.substring(
+                account.length - 4
               )}`}
             </span>
           </button>
@@ -46,7 +47,7 @@ const Header = ({ accounts, isActive, isActivating }) => {
           <button
             className="px-[20px] py-[8px] border border-blue rounded-[5px] flex space-x-4 items-center mr-[100px] w-[200px] justify-center h-[40px]"
             onClick={() => {
-              switchChain()
+              switchChain();
             }}
           >
             {isActivating ? (
@@ -58,7 +59,7 @@ const Header = ({ accounts, isActive, isActivating }) => {
         )}
       </div>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

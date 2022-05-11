@@ -1,19 +1,17 @@
-import Image from 'next/image'
-import logo2 from '../../public/img/Logo2.png'
-import { BsBank, BsCheckSquareFill } from 'react-icons/bs'
-import { FaMoneyBillAlt } from 'react-icons/fa'
-import { useSelector } from 'react-redux'
+import logo2 from "../img/Logo2.png";
+import { BsBank, BsCheckSquareFill } from "react-icons/bs";
+import { FaMoneyBillAlt } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const Info = () => {
-  const dailyPercent = useSelector((state) => state.dailyPercent)
-  const apr = useSelector((state) => state.apr)
-  console.log(dailyPercent)
+  const { totalStacked, totalFarmers, totalReferral, contractBalance } =
+    useSelector((state) => state.siteInfo);
   return (
     <section className="flex justify-center items-center border-[6px] border-blue rounded-md bg-bg">
       <div className="flex flex-col w-full p-[50px]">
         <div className="flex justify-around items-center text-center">
           <div>
-            <Image src={logo2} height={175} width={175} />
+            <img src={logo2} className="w-[175px] h-[175px]" alt="farmer" />
           </div>
           <div className="flex flex-col justify-center items-center space-y-3">
             <h2 className="text-[64px] text-black font-bold leading-10">
@@ -36,45 +34,45 @@ const Info = () => {
               <BsBank className="w-[18px] h-[18px]" />
               <div>
                 <div className="text-xl font-semibold">Total Stacked</div>
-                <div className="text-3xl font-bold">-</div>
+                <div className="text-3xl font-bold">{totalStacked}</div>
               </div>
             </div>
             <div className="flex justify-start items-center space-x-2 card">
               <BsBank className="w-[18px] h-[18px]" />
               <div>
                 <div className="text-xl font-semibold">Total Referral</div>
-                <div className="text-3xl font-bold">-</div>
+                <div className="text-3xl font-bold">{totalReferral}</div>
               </div>
             </div>
             <div className="flex justify-start items-center space-x-2 card">
               <BsBank className="w-[18px] h-[18px]" />
               <div>
                 <div className="text-xl font-semibold">Contract Balance</div>
-                <div className="text-3xl font-bold">-</div>
+                <div className="text-3xl font-bold">{contractBalance}</div>
               </div>
             </div>
             <div className="flex justify-start items-center space-x-2 card">
               <BsBank className="w-[18px] h-[18px]" />
               <div>
                 <div className="text-xl font-semibold">Total Farmers</div>
-                <div className="text-3xl font-bold">-</div>
+                <div className="text-3xl font-bold">{totalFarmers}</div>
               </div>
             </div>
             <div className="flex p-2 space-x-2 text-white">
-              <a href="https://bit.ly/3ME8Y1D" target="_blank">
+              <a href="https://bit.ly/3ME8Y1D" target="_blank" rel="noreferrer">
                 <div className="flex px-6 py-4 border border-white rounded-xl text-center items-center cursor-pointer hover:text-blue hover:border-blue">
                   <FaMoneyBillAlt className="w-[24px] h-[24px]" />
                   <span>BUSD CROPS</span>
                 </div>
               </a>
 
-              <a href="https://bit.ly/3Kqjpoa" target="_blank">
+              <a href="https://bit.ly/3Kqjpoa" target="_blank" rel="noreferrer">
                 <div className="flex px-6 py-4 border border-white rounded-xl text-center items-center cursor-pointer hover:text-blue hover:border-blue">
                   <FaMoneyBillAlt className="w-[24px] h-[24px]" />
                   <span>USDC CROPS</span>
                 </div>
               </a>
-              <a href="https://bit.ly/3rVfWY8" target="_blank">
+              <a href="https://bit.ly/3rVfWY8" target="_blank" rel="noreferrer">
                 <div className="flex px-6 py-4 border border-white rounded-xl text-center items-center cursor-pointer hover:text-blue hover:border-blue">
                   <FaMoneyBillAlt className="w-[24px] h-[24px]" />
                   <span>BNB CROPS</span>
@@ -90,7 +88,7 @@ const Info = () => {
               <ul className="space-y-2">
                 <li className="flex items-center">
                   <BsCheckSquareFill className="mr-2" />
-                  <span className="text-white">{`Up to ${dailyPercent}% Daily ~ ${apr}% APR`}</span>
+                  <span className="text-white">Up to 6% Daily ~ 2190% APR</span>
                 </li>
                 <li className="flex items-center">
                   <BsCheckSquareFill className="mr-2" />
@@ -98,7 +96,7 @@ const Info = () => {
                 </li>
                 <li className="flex items-center">
                   <BsCheckSquareFill className="mr-2" />
-                  <span className="text-white">7% Referrals</span>
+                  <span className="text-white">7% Referral Rewards</span>
                 </li>
                 <li className="flex items-center">
                   <BsCheckSquareFill className="mr-2" />
@@ -136,7 +134,7 @@ const Info = () => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Info
+export default Info;

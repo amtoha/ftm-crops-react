@@ -1,58 +1,64 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import Header from "../src/components/Header";
+import Footer from "../src/components/Footer";
+import { useEffect } from "react";
+import { hooks, metaMask } from "./utils/connectors";
+import { defaultChain } from "./utils/chains";
+import { switchChain } from "./utils/utils";
+import {
+  createContract,
+  fetchSiteInfo,
+  fetchUserInfo,
+} from "./app/contractSlice";
+import { useDispatch } from "react-redux";
+import Info from "./components/Info";
+import Dashboard from "./components/Dashboard";
+import FAQ from "./components/FAQ";
 
-function App() {
+const App = () => {
+  const { useIsActive, useIsActivating, useChainId, useAccount, useProvider } =
+    hooks;
+  const account = useAccount();
+  const isActive = useIsActive();
+  const isActivating = useIsActivating();
+  const chainId = useChainId();
+  const provider = useProvider();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (provider) {
+      dispatch(createContract(provider));
+      dispatch(fetchSiteInfo());
+      dispatch(fetchUserInfo(account));
+    }
+  }, [provider, account]);
+
+  useEffect(() => {
+    void metaMask.connectEagerly();
+  }, []);
+
+  useEffect(() => {
+    if (chainId && defaultChain.chainId !== chainId) {
+      // eslint-disable-next-line no-restricted-globals
+      confirm("Wrong network selected, change ?") &&
+        switchChain().then(() => console.log("Network changed"));
+    }
+  }, [chainId]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+    <div className="flex min-h-screen flex-col">
+      <Header
+        account={account}
+        isActive={isActive}
+        isActivating={isActivating}
+      />
+      <main className="container flex flex-col mx-auto px-[100px] pt-[200px] pb-[60px] space-y-[60px]">
+        <Info />
+        <Dashboard />
+        <FAQ />
+      </main>
+      <Footer />
     </div>
   );
-}
+};
 
 export default App;
